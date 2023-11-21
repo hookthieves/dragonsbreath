@@ -7,6 +7,8 @@ File bloating is an evasion technique where a malicious file is inflated with ju
 dragonsbreath.exe
 ## Output
 ![image](https://github.com/hookthieves/dragonsbreath/assets/46670348/17568326-8e27-4155-83e8-296f851b1d24)
+## Licence
+MIT Licence @ [MIT](https://raw.githubusercontent.com/hookthieves/dragonsbreath/main/LICENCE)    
 ## Results:
 This specific technique is able to bypass many AV and EDR statically. However the operator will need to have opsec in mind when executing the binary. So far, this project is able to bypass:
 1. Windows Defender
