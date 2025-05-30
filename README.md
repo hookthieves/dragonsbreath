@@ -33,16 +33,16 @@ Execute the compiled program:
 
 The program will:
 
-Prompt for the original executable name (e.g., Virus.exe).
-Prompt for the file size in megabytes to append as null bytes.
-Create a temporary binary file (new_mb_file.bin) filled with null bytes.
-Concatenate the original executable and the binary file using copy /b.
-Rename the output file to include the bloat size (e.g., Virus_200.exe).
-Delete the temporary binary file.
+1. Prompt for the original executable name (e.g., Virus.exe).
+2. Prompt for the file size in megabytes to append as null bytes.
+3. Create a temporary binary file (new_mb_file.bin) filled with null bytes.
+4. Concatenate the original executable and the binary file using copy /b.
+5. Rename the output file to include the bloat size (e.g., Virus_200.exe).
+6. Delete the temporary binary file.
 
 Example
 Run the program and follow the prompts:
-```
+
         ###########################################################
         #         Dragons Breath - Designed By Cuong Nguyen       #
         ###########################################################
