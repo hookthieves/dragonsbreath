@@ -1,102 +1,172 @@
-Dragonsbreath
 
-Overview
-**Dragonsbreath** is a **C program** designed to automate a **file bloating evasion technique** commonly used in **red teaming operations**. The tool inflates a **Portable Executable (PE) file** with **junk data** (null bytes) to evade **static analysis** by **Antivirus (AV)** and **Endpoint Detection and Response (EDR)** systems. The operator specifies the original executable and the desired bloat size (in megabytes), and the program generates a new file with the appended null bytes, renaming it to reflect the bloat size (e.g., `Virus_200.exe` for 200MB of null bytes).
+# Dragonsbreath
 
-Intention
-The project was created to **automate** a file bloating technique frequently used during **red teaming operations**. By turning this technique into a reusable tool, it streamlines workflows and enables **team collaboration** for **evasion-focused security research**.
+**Dragonsbreath** is a lightweight **C utility** designed to automate a **file bloating evasion technique** used in **red team operations**. It appends **null bytes** to a **Portable Executable (PE) file** to artificially increase its size, which can help evade **static analysis** by **Antivirus (AV)** and **Endpoint Detection and Response (EDR)** tools.
 
-Features
-- **File Bloating**: Appends a user-specified number of **null bytes** to a PE file to increase its size.
-- **Customizable Size**: Allows the operator to define the **bloat size** in megabytes.
-- **Automated File Creation**: Generates a new executable with a name indicating the bloat size (e.g., `Virus_200.exe`).
-- **Error Handling**: Includes checks for **file operations** and **system commands**.
-- **Cross-Platform Commands**: Uses Windows `copy /b` for file concatenation.
+---
 
-Prerequisites
-- A **C compiler** (e.g., MSVC, gcc).
-- **Windows environment** (for `copy /b` command and file operations).
-- Basic understanding of **PE files** and **evasion techniques**.
+## Overview
 
-Usage
+This tool simplifies the manual process of file bloating by:
+- Allowing operators to specify an original executable
+- Defining a custom bloat size in megabytes
+- Automatically generating a new file (e.g., `Virus_200.exe`) with appended junk data
 
-Compilation
-Compile the program using a **C compiler**. Examples:
-- **MSVC**: `cl dragonsbreath.c`
-- **gcc**: `gcc dragonsbreath.c -o dragonsbreath`
+The resulting file retains functionality but increases in size, potentially evading detection based on size thresholds or static signatures.
 
-Running the Program
-Execute the compiled program:
+---
+
+## Features
+
+- **File Bloating**: Appends a specified number of null bytes to inflate file size
+- **Customizable Output**: Output file is renamed to reflect the new size (e.g., `Virus_300.exe`)
+- **Error Handling**: Built-in checks for file operations and system calls
+- **Cross-Compatible with Windows**: Uses `copy /b` for concatenation on Windows systems
+
+---
+
+## Prerequisites
+
+- **C compiler** (e.g., `gcc`, `cl`)
+- **Windows operating system** (for file operations and `copy /b` command)
+- Basic knowledge of **PE file formats** and **evasion techniques**
+
+---
+
+## Compilation
+
+Use a standard C compiler to compile the source:
+
+### With GCC
+
+```bash
+gcc dragonsbreath.c -o dragonsbreath
+````
+
+### With MSVC
+
+```bash
+cl dragonsbreath.c
+```
+
+---
+
+## Usage
+
+Run the compiled executable:
+
 ```bash
 ./dragonsbreath
 ```
 
+Follow the interactive prompts:
+
+1. Enter the name of the original executable (e.g., `Virus.exe`)
+2. Enter the bloat size in **megabytes**
+
 The program will:
 
-1. Prompt for the original executable name (e.g., Virus.exe).
-2. Prompt for the file size in megabytes to append as null bytes.
-3. Create a temporary binary file (new_mb_file.bin) filled with null bytes.
-4. Concatenate the original executable and the binary file using copy /b.
-5. Rename the output file to include the bloat size (e.g., Virus_200.exe).
-6. Delete the temporary binary file.
+* Generate a temporary binary file of null bytes
+* Concatenate the original executable and the null-byte file
+* Rename the output to `Original_BloatSize.exe` (e.g., `Virus_200.exe`)
+* Delete the temporary file
 
-Example
-Run the program and follow the prompts:
+### Example
 
-        ###########################################################
-        #         Dragons Breath - Designed By Cuong Nguyen       #
-        ###########################################################
+```text
+###########################################################
+#         Dragons Breath - Designed By Cuong Nguyen       #
+###########################################################
 
-            --> File bloating evasion technique <--
+    --> File bloating evasion technique <--
 
-[i] Enter the name of the original executable file: Virus.exe[i] Enter the file size in MBs: 200[!] New file 'Virus_200.exe' has been generated.[i] Press  to exit programBye...
+[i] Enter the name of the original executable file: Virus.exe
+[i] Enter the file size in MBs: 200
+[!] New file 'Virus_200.exe' has been generated.
+```
 
-<h3>Output</h3>
-The program generates a new executable with the specified number of **null bytes** appended, named to reflect the bloat size (e.g., `Virus_200.exe`).
+---
 
-![Output Image](https://github.com/hookthieves/dragonsbreath/assets/46670348/17568326-8e27-4155-83e8-296f851b1d24)
+## Output
 
-<h2>Code Structure</h2>
-- **main**: Orchestrates **user input**, **file bloating**, **file concatenation**, and **renaming**.
-- Uses **fopen** and **fwrite** to create a temporary binary file with **null bytes**.
-- Uses **scanf** to capture the **executable name** and **bloat size**.
-- Uses **system** to execute the `copy /b` command for file concatenation.
-- Uses **remove** and **rename** to manage temporary and output files.
+* A new bloated file is created in the same directory
+* File size is increased by the specified megabytes of null bytes
+* Filename includes the original name and bloat size (e.g., `Virus_200.exe`)
 
-<h2>Results</h2>
-This **file bloating technique** has been tested to bypass **static analysis** by the following **AV/EDR systems**:
-1. **Windows Defender**
-2. **Tanium**
-3. **Symantec Endpoint**
-4. **Elastic EDR**
-5. **Crowdstrike**
+---
 
-**Note**: While effective against **static scans**, operators must exercise **operational security (OPSEC)** when executing the bloated binary, as **dynamic analysis** may still detect malicious behavior.
+## Code Structure
 
-<h2>Notes</h2>
-- **File Size**: The program supports bloating up to **unsigned int** megabytes (limited by system resources).
-- **Evasion**: File bloating increases file size to evade **static signature detection**, but does not protect against **behavioral detection**.
-- **Limitations**: The `copy /b` command and file operations are Windows-specific. Large file sizes may impact performance.
-- **OPSEC**: Avoid suspicious file names or payloads that may trigger **heuristic detection**.
+* **main**: Manages user input, file writing, concatenation, and cleanup
+* Uses:
 
-<h2>Testing</h2>
-- Test in a **controlled Windows environment** (e.g., a virtual machine).
-- Verify the output file (`<original>_<size>.exe`) contains the correct number of **null bytes** using a hex editor.
-- Test against **AV/EDR systems** listed in the results section to confirm evasion.
-- Monitor **EDR logs** for detection during execution.
+  * `fopen`, `fwrite` to create a temporary file of null bytes
+  * `scanf` for user input
+  * `system("copy /b")` to merge files
+  * `remove`, `rename` for file management
 
-<h2>Future Improvements</h2>
-- Add support for **randomized junk data** instead of null bytes for better evasion.
-- Implement **command-line arguments** for automated input.
-- Support **non-Windows platforms** with alternative file concatenation methods.
-- Add **validation** for the input executable's integrity (e.g., PE header checks).
+---
 
-<h2>License</h2>
-This project is licensed under the **MIT License**. See the [LICENSE](https://raw.githubusercontent.com/hookthieves/dragonsbreath/main/LICENCE) file for details.
+## Results
 
-<h2>Legal and Ethical Considerations</h2>
-This tool is for **educational and research purposes only**. It demonstrates a **file bloating evasion technique** for security research. Ensure compliance with all applicable **laws** and **ethical guidelines** when using this code, especially in **red teaming** or **evasion-focused research**.
+This technique has shown success in bypassing static detection on:
 
-<h2>Contact</h2>
-For questions or contributions, please contact the project maintainer (Cuong Nguyen) or open an issue on the [GitHub repository](https://github.com/hookthieves/dragonsbreath).
+1. Windows Defender
+2. Tanium
+3. Symantec Endpoint
+4. Elastic EDR
+5. Crowdstrike
+
+While effective against **static scanners**, this method does **not prevent dynamic analysis**. Use with appropriate **OPSEC** controls during execution.
+
+---
+
+## Notes
+
+* **Bloat Limit**: Supports sizes up to the maximum value of an `unsigned int` (system-dependent)
+* **Platform-Specific**: Uses Windows-specific `copy /b` for merging; not cross-platform
+* **Performance Impact**: Large bloated files may affect execution or detection due to size
+* **Naming**: Choose inconspicuous filenames to avoid heuristic detection
+
+---
+
+## Testing Guidelines
+
+* Use in **isolated Windows test environments**
+* Confirm file size with a hex editor or binary viewer
+* Monitor execution with AV/EDR tools to verify bypass success
+* Observe logs and alerts for possible detection triggers
+
+---
+
+## Future Improvements
+
+* Support **randomized byte padding** instead of null bytes
+* Add **command-line arguments** for non-interactive use
+* Implement **cross-platform support** with native file operations
+* Add **PE file validation** (e.g., header integrity checking)
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.
+See the [LICENSE](https://raw.githubusercontent.com/hookthieves/dragonsbreath/main/LICENCE) file for details.
+
+---
+
+## Legal and Ethical Use
+
+This tool is intended **strictly for educational and authorized research purposes**.
+It demonstrates a **file bloating technique** often used in **red teaming**.
+Use only in environments where you have **explicit permission** to test security controls.
+Always follow applicable **laws** and **ethical guidelines**.
+
+---
+
+## Contact
+
+Created by **Cuong Nguyen**
+For issues, improvements, or feedback, visit the [GitHub repository](https://github.com/hookthieves/dragonsbreath).
+
 
